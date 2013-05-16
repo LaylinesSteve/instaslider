@@ -28,7 +28,7 @@
     "bugs": "https://github.com/christill89/instaslider/issues",
     "homepage": "http://christill89.github.io/instaslider/",
     "docs": "http://christill89.github.io/instaslider/",
-    "download": "http://christill89.github.io/instaslider/",
+    "download": "https://github.com/christill89/instaslider",
     "dependencies": {
         "jquery": ">=1.5"
     }
