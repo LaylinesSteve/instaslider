@@ -13,7 +13,7 @@ A lightweight <em>(just 2kb when minified!)</em> jQuery image slider / carousel 
 <h3>HTML</h3>
 
 <pre>
- &lt;div class="myslider"&gt;&lt/div&gt;
+ &lt;div class="myslider"&gt;&lt;/div&gt;
 </pre>
 
 <h3>jQuery</h3>
