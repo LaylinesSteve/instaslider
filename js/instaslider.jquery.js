@@ -7,7 +7,7 @@
 //		|__|___|  /____  > |__| (____  /_______  /|____/__\____ |\___  >__|   
 //	 	       \/     \/            \/        \/              \/    \/       
 //
-//		Version 0.0.1 - 15/05/2013.
+//		Version 0.1.1 - 15/05/2013.
 //		A jQuery Slider plugin that populates with images from instagr.am
 //		Created by Chris Till. http://iamchristill.com.
 //
@@ -46,15 +46,13 @@ if (typeof Object.create !== 'function'){
 				self.container = container,
 				self.$container = $(container),
 				self.current = 0, // Set current to 0 on initialise
-				self.imgWidth = self.$container.width(); // img width will be the same as the container
-
-				self.options = $.extend({}, $.fn.instaSlider.options, options);
+				self.imgWidth = self.$container.width(), // img width will be the same as the container
+				self.options = $.extend({}, $.fn.instaSlider.options, options),
+				self.endpoint = 'https://api.instagram.com/v1/tags/' + this.options.hash + '/media/recent?client_id=' + this.options.clientID;	
 				
-				self.imgLength = self.options.limit;
+			this.createSlider(); // Create the slider
 
-				this.createSlider(); // Create the slider
-
-				self.sliderUL = self.$container.find('.instaslider-wrapper ul');
+			self.sliderUL = self.$container.find('.instaslider-wrapper ul');
 		},
 		
 		createSlider: function(){
@@ -63,11 +61,9 @@ if (typeof Object.create !== 'function'){
 			
 			this.createNav();
 			this.createSlides();
-
 		},
 
 		createNav: function() {
-
 			var self = this;
 			// create the navigation for the slider
 			var	buttonPrev = '<button class="' + this.options.prevClass + '" data-direction="prev">Prev</button>',
@@ -82,24 +78,16 @@ if (typeof Object.create !== 'function'){
 				self.setCurrent( $(this).data('direction') );
 				self.transition();
 			});
-
 		},
 
 		fetch: function() {
-
-			// Set the endpoint
-
-			var endpoint = 'https://api.instagram.com/v1/tags/' + this.options.hash + '/media/recent?client_id=' + this.options.clientID;	
-
 			//fetch images from instagram
-
 			return $.ajax({
-				url: endpoint,
+				url: this.endpoint,
 				data: {},
 				dataType: 'jsonp',
 				type:'GET'
 			});
-
 		},
 
 		createSlides: function() {
@@ -109,7 +97,6 @@ if (typeof Object.create !== 'function'){
 				sliderUL = container.find('.instaslider-wrapper ul');			
 			
 			self.fetch().done(function(results){
-				
 				// Limit the amount of results
 				results = self.limit( results.data, self.options.limit );
 				// loop over results create a slider for each one.
@@ -117,7 +104,6 @@ if (typeof Object.create !== 'function'){
 					var img = '<li><img src="' + results[i].images.standard_resolution.url + '" /></li>';
 					sliderUL.append(img);
 				});
-
 			});
 
 			self.fetch().fail(function(){
@@ -132,7 +118,7 @@ if (typeof Object.create !== 'function'){
 			var self = this;
 			var pos = self.current;
 			pos += ( ~~(direction === 'next') || -1);
-			self.current = ( pos < 0 ) ? self.imgLength -1 : pos % self.imgLength;
+			self.current = ( pos < 0 ) ? self.options.limit -1 : pos % self.options.limit;
 			return pos;
 		},
 
@@ -142,7 +128,7 @@ if (typeof Object.create !== 'function'){
 
 			self.sliderUL.stop().animate({
 				'margin-left': -( this.current * this.imgWidth )
-			});
+			}, self.options.duration);
 		},
 
 		limit: function(obj, count) {
@@ -171,6 +157,7 @@ if (typeof Object.create !== 'function'){
 		prevClass: 'prev',
 		nextClass: 'next',
 		limit: 5,
+		duration: 400
 	}
 
 })(jQuery, window, document, undefined);

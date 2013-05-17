@@ -5,11 +5,14 @@
     "keywords": [
         "slider",
         "instagram",
-        "hashtag"
+        "hashtag",
+        "image",
+        "animation"
     ],
-    "version": "0.1.0",
+    "version": "0.1.1",
     "author": {
         "name": "Chris Till",
+        "email": "christill89@gmail.com",
         "url": "http://iamchristill.com"
     },
     "maintainers": [
@@ -28,7 +31,7 @@
     "bugs": "https://github.com/christill89/instaslider/issues",
     "homepage": "http://christill89.github.io/instaslider/",
     "docs": "http://christill89.github.io/instaslider/",
-    "download": "https://github.com/christill89/instaslider",
+    "download": "https://github.com/christill89/instaslider/archive/master.zip",
     "dependencies": {
         "jquery": ">=1.5"
     }

@@ -96,6 +96,14 @@ These are the default options for the plugin that can be overridden.
     <td>Allows for limiting the number of slides.</td>
 </tr>
 
+<tr>
+    <td>Duration</td>
+    <td>400</td>
+    <td>optional</td>
+   <td>integer</td>
+    <td>Determines the duration of the slide animation.</td>
+</tr>
+
 </table>
 <br/>
 <pre>
@@ -105,6 +113,7 @@ $('.myslider').instaSlider({
       prevClass: 'prev',
       nextClass: 'next',
       limit: 5,
+      duration: 1000
 });
 </pre>
 
@@ -112,6 +121,9 @@ $('.myslider').instaSlider({
 <ul>
 <li><a href="http://jquery.com/">jQuery</a></li>
 </ul>
+
+<h2>Author</h2>
+Chris Till - <a href="http://iamchristill.com" target="_blank">iamchristill.com</a>
 
 <h2>Licence</h2>
 
