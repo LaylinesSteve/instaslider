@@ -131,8 +131,8 @@ if (typeof Object.create !== 'function'){
 			}, self.options.duration);
 		},
 
-		limit: function(obj, count) {
-			return obj.slice( 0, count );
+		limit: function(obj, limit) {
+			return obj.slice( 0, limit );
 		},
 
 	};
