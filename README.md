@@ -1,5 +1,5 @@
 <h1>jQuery InstaSlider</h1>
-A lightweight <em>(just 2kb when minified!)</em> jQuery image slider / carousel plugin that populates content from an Instagram hashtag.
+A lightweight <em>(just 2kb when minified!)</em> jQuery image slider / carousel plugin that populates content from an Instagram hashtag or username.
 <pre>
     .__                 __           _________.__  .__    .___            
     |__| ____   _______/  |______   /   _____/|  | |__| __| _/___________ 
@@ -19,7 +19,8 @@ A lightweight <em>(just 2kb when minified!)</em> jQuery image slider / carousel 
 <h3>jQuery</h3>
 <pre>
 $('.myslider').instaSlider({
-       clientID: 'your-id-here'
+      clientID: 'your-id-here',
+      access_token: 'your-access-token-here'
 });
 </pre>
 
@@ -65,11 +66,19 @@ These are the default options for the plugin that can be overridden.
 </tr>
 
 <tr>
-    <td>hash</td>
-    <td>photooftheday</td>
+   <td>access_token</td>
+<td>null</td>
+<td>required</td>
+<td>string</td>
+<td>An access token is required for to be able to fetch data from a @username. This can be obtained at <a href="http://jelled.com/instagram/access-token">http://jelled.com/instagram/access-token</a>
+</tr>
+
+<tr>
+    <td>search</td>
+    <td>@iamchristill</td>
     <td>optional</td>
    <td>string</td>
-    <td>An Instagram hashtag for plugin to fetch content from.</td>
+    <td>An Instagram hashtag or username for plugin to fetch content from.</td>
 </tr>
 
 <tr>
@@ -104,16 +113,35 @@ These are the default options for the plugin that can be overridden.
     <td>Determines the duration of the slide animation.</td>
 </tr>
 
+<tr>
+    <td>Auto</td>
+    <td>true</td>
+    <td>optional</td>
+   <td>boolean</td>
+    <td>If true, the slider will automatically slide.</td>
+</tr>
+
+<tr>
+    <td>Delay</td>
+    <td>5000</td>
+    <td>optional</td>
+   <td>integer</td>
+    <td>Determines the delay before animating.</td>
+</tr>
+
 </table>
 <br/>
+
 <pre>
 $('.myslider').instaSlider({
       clientID: null,
-      hash: 'photooftheday',
+      access_token: null
+      search: '@iamchristill',
       prevClass: 'prev',
       nextClass: 'next',
       limit: 5,
-      duration: 1000
+      duration: 1000,
+      delay: 5000
 });
 </pre>
 
@@ -150,5 +178,4 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </pre>
 
 <a href="http://mit-license.org/">http://mit-license.org/</a>
-
 
