@@ -7,7 +7,7 @@
 //	|__|___|  /____  > |__| (____  /_______  /|____/__\____ |\___  >__|   
 //          \/     \/            \/        \/              \/    \/       
 //
-//	Version 0.1.1 - 15/05/2013.
+//	Version 1.0 - 29/06/2013.
 //	A jQuery Slider plugin that populates with images from instagr.am
 //	Created by Chris Till. http://iamchristill.com.
 //
@@ -25,35 +25,64 @@
 //	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 //
-// Polyfill for older browsers
-if (typeof Object.create !== 'function') {
-    Object.create = function (obj) {
-        "use strict";
 
-        function F() {}
-        F.prototype = obj;
-        return new F();
-    };
-}
+;(function ( $, window, document, undefined ) {
 
-(function ($, window, document, undefined) {
-    "use strict";
+    // Create the defaults once
+    var pluginName = "instaSlider",
+        defaults = {
+            clientID: null,
+            access_token: null,
+            search: '@iamchristill',
+            prevClass: 'prev',
+            nextClass: 'next',
+            limit: 5,
+            duration: 400,
+            auto: true,
+            delay: 5000
+        };
 
-    var InstaSlider = {
+    // The actual plugin constructor
+    function Plugin( element, options ) {
+        this.element = element;
 
-        init: function (options, container) {
+        this.options = $.extend( {}, defaults, options );
 
+        this._defaults = defaults;
+        this._name = pluginName;
+
+        this.init();
+    }
+
+    Plugin.prototype = {
+
+        init: function() {
+         
             var self = this;
-            self.container = container,
-            self.$container = $(container),
+            self.container = self.element,
+            self.$container = $(self.element),
             self.current = 0, // Set current to 0 on initialise
             self.imgWidth = self.$container.width(), // img width will be the same as the container
-            self.options = $.extend({}, $.fn.instaSlider.options, options),
-            self.endpoint = 'https://api.instagram.com/v1/tags/' + this.options.hash + '/media/recent?client_id=' + this.options.clientID;
+            self.endpoint = 'https://api.instagram.com/v1/tags/' + this.options.search + '/media/recent?client_id=' + this.options.clientID;
+            self.username = '';
 
-            this.createSlider(); // Create the slider
+            self.createSlider(); // Create the slider
 
             self.sliderUL = self.$container.find('.instaslider-wrapper ul');
+
+            // If auto is enabled then run auto function
+            if (this.options.auto) {
+                self.auto();
+            }
+
+            var isMatch = self.options.search.substr(0, 1) == "@";
+
+            if (isMatch){
+                self.fetchUserFeed();
+            } else {
+                this.fetchHashtag();
+            }
+
         },
 
         createSlider: function () {
@@ -61,7 +90,6 @@ if (typeof Object.create !== 'function') {
             this.$container.append('<div class="instaslider-wrapper"><ul></ul></div>');
 
             this.createNav();
-            this.createSlides();
         },
 
         createNav: function () {
@@ -91,7 +119,7 @@ if (typeof Object.create !== 'function') {
             });
         },
 
-        createSlides: function () {
+        fetchHashtag: function () {
             // create the slides
             var self = this,
                 container = this.$container,
@@ -132,33 +160,56 @@ if (typeof Object.create !== 'function') {
             }, self.options.duration);
         },
 
+        auto: function () {
+            var self = this;
+            setInterval(function() { 
+                self.setCurrent('next');
+                self.transition();
+            }, this.options.delay);
+        },
+
+        fetchUserFeed: function() {
+
+            var self = this,
+                container = this.$container,
+                sliderUL = container.find('.instaslider-wrapper ul');            
+            
+            // Get the user id from the username first
+
+            this.endpoint = 'https://api.instagram.com/v1/users/search?q='+ self.options.search + '&access_token=' + self.options.access_token;
+
+            this.fetch().done(function(data){
+
+                var userid = data.data[0].id;
+                self.endpoint = 'https://api.instagram.com/v1/users/' + userid + '/media/recent?access_token=' + self.options.access_token;
+
+                self.fetch().done(function(results){
+                    // Limit the amount of results
+                    results = self.limit(results.data, self.options.limit);
+                    // loop over results create a slider for each one.
+                    self.slides = $.map(results, function (obj, i) {
+                        var img = '<li><img src="' + results[i].images.standard_resolution.url + '" /></li>';
+                        sliderUL.append(img);
+                    });
+                });
+
+            });
+        },
+
         limit: function (obj, limit) {
             return obj.slice(0, limit);
         }
 
     };
 
-    $.fn.instaSlider = function (options) {
+    // A really lightweight plugin wrapper around the constructor,
+    // preventing against multiple instantiations
+    $.fn[pluginName] = function ( options ) {
         return this.each(function () {
-            var instaSlider = Object.create(InstaSlider);
-            instaSlider.init(options, this);
-            $.data(this, 'instaSlider', instaSlider);
+            if (!$.data(this, "plugin_" + pluginName)) {
+                $.data(this, "plugin_" + pluginName, new Plugin( this, options ));
+            }
         });
     };
 
-    /*----------------------------------------------------------------
-		Default Options
-	----------------------------------------------------------------*/
-
-    $.fn.instaSlider.options = {
-
-        // Default Options
-        clientID: null,
-        hash: 'photooftheday',
-        prevClass: 'prev',
-        nextClass: 'next',
-        limit: 5,
-        duration: 400
-    };
-
-})(jQuery, window, document, undefined);
+})( jQuery, window, document );
