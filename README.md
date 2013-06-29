@@ -43,7 +43,7 @@ div.error p{width:300px;line-height:180%;margin:0 auto;padding:167px 0 0}
 </pre>
 
 <h2>Demo</h2>
-<a href="http://jsfiddle.net/fTrQM/" target="_blank">http://jsfiddle.net/fTrQM/</a>
+<a href="http://iamchristill.com/plugins/instaslider/" target="_blank">http://iamchristill.com/plugins/instaslider/</a>
 
 <h2>Default Options</h2>
 These are the default options for the plugin that can be overridden.
