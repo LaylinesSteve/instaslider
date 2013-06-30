@@ -3,35 +3,38 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
     <title>InstaSlider by christill89</title>
   </head>
 
   <body>
-    <header>
+    <div id="container">
       <div class="inner">
-        <h1>InstaSlider</h1>
-        <h2>A jQuery Slider plugin that populates with images from instagram.</h2>
-        <a href="https://github.com/christill89/instaslider" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
+        <header>
+          <h1>InstaSlider</h1>
+          <h2>A jQuery Slider plugin that populates with images from instagram.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/christill89/instaslider/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/christill89/instaslider/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/christill89/instaslider" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
           <h1>
 <a name="jquery-instaslider" class="anchor" href="#jquery-instaslider"><span class="octicon octicon-link"></span></a>jQuery InstaSlider</h1>
 
-<p>A lightweight <em>(just 2kb when minified!)</em> jQuery image slider / carousel plugin that populates content from an Instagram hashtag.</p>
+<p>A lightweight <em>(just 2kb when minified!)</em> jQuery image slider / carousel plugin that populates content from an Instagram hashtag or username.</p>
 
 <pre>
     .__                 __           _________.__  .__    .___            
@@ -57,7 +60,8 @@
 
 <pre>
 $('.myslider').instaSlider({
-       clientID: 'your-id-here'
+      clientID: 'your-id-here',
+      access_token: 'your-access-token-here'
 });
 </pre>
 
@@ -85,7 +89,7 @@ div.error p{width:300px;line-height:180%;margin:0 auto;padding:167px 0 0}
 <h2>
 <a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h2>
 
-<p><a href="http://jsfiddle.net/fTrQM/" target="_blank"></a><a href="http://jsfiddle.net/fTrQM/">http://jsfiddle.net/fTrQM/</a></p>
+<p><a href="http://iamchristill.com/plugins/instaslider/" target="_blank"></a><a href="http://iamchristill.com/plugins/instaslider/">http://iamchristill.com/plugins/instaslider/</a></p>
 
 <h2>
 <a name="default-options" class="anchor" href="#default-options"><span class="octicon octicon-link"></span></a>Default Options</h2>
@@ -108,11 +112,19 @@ div.error p{width:300px;line-height:180%;margin:0 auto;padding:167px 0 0}
     <td>A clientID must be generated for this plugin to work. You can do this at <a href="http://instagram.com/developer/clients/register/">http://instagram.com/developer/clients/register/</a>.</td>
 </tr>
 <tr>
-<td>hash</td>
-    <td>photooftheday</td>
+<td>access_token</td>
+<td>null</td>
+<td>required</td>
+<td>string</td>
+<td>An access token is required for to be able to fetch data from a <a href="https://github.com/username" class="user-mention">@username</a>. This can be obtained at <a href="http://jelled.com/instagram/access-token">http://jelled.com/instagram/access-token</a>
+</td>
+</tr>
+<tr>
+<td>search</td>
+    <td>@iamchristill</td>
     <td>optional</td>
    <td>string</td>
-    <td>An Instagram hashtag for plugin to fetch content from.</td>
+    <td>An Instagram hashtag or username for plugin to fetch content from.</td>
 </tr>
 <tr>
 <td>prevClass</td>
@@ -142,16 +154,32 @@ div.error p{width:300px;line-height:180%;margin:0 auto;padding:167px 0 0}
    <td>integer</td>
     <td>Determines the duration of the slide animation.</td>
 </tr>
+<tr>
+<td>Auto</td>
+    <td>true</td>
+    <td>optional</td>
+   <td>boolean</td>
+    <td>If true, the slider will automatically slide.</td>
+</tr>
+<tr>
+<td>Delay</td>
+    <td>5000</td>
+    <td>optional</td>
+   <td>integer</td>
+    <td>Determines the delay before animating.</td>
+</tr>
 </table><p><br></p>
 
 <pre>
 $('.myslider').instaSlider({
       clientID: null,
-      hash: 'photooftheday',
+      access_token: null
+      search: '@iamchristill',
       prevClass: 'prev',
       nextClass: 'next',
       limit: 5,
-      duration: 1000
+      duration: 1000,
+      delay: 5000
 });
 </pre>
 
@@ -193,24 +221,12 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <p><a href="http://mit-license.org/"></a><a href="http://mit-license.org/">http://mit-license.org/</a></p>
         </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/christill89/instaslider/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/christill89/instaslider/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+        <footer>
+          InstaSlider is maintained by <a href="https://github.com/christill89">christill89</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
 
-          <p class="repo-owner"><a href="https://github.com/christill89/instaslider"></a> is maintained by <a href="https://github.com/christill89">christill89</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
-
-            <script type="text/javascript">
+                  <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -221,5 +237,7 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             } catch(err) {}
           </script>
 
+      </div>
+    </div>
   </body>
 </html>
